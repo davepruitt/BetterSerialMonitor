@@ -93,7 +93,20 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Column="0" Grid.Row="1"
+                       Grid.ColumnSpan="5"
+                       Text="When adding bytes, separate each byte with a space. Bytes can be represented using decimal (0-255) or hexidecimal (0x00-0xff) numbers." 
+                       FontSize="12"
+                       TextWrapping="Wrap"
+                       HorizontalAlignment="Left"
+                       Margin="0,3,0,0"
+                       />
+
             <TextBlock Grid.Column="0" 
                        Text="Text to send: " 
                        VerticalAlignment="Center" />
