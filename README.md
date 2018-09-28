@@ -7,4 +7,3 @@ When adding bytes to your message, you can choose to enter a decimal number or a
 
 Have fun!
 
-- David
