@@ -77,5 +77,16 @@ namespace BetterSerialMonitor
         {
             MainWindowViewModel.GetInstance().ClearBuffer();
         }
+
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            DataReceivedBuffer.ScrollToEnd();
+        }
+
+        private void DataTypeAddButton_Click(object sender, RoutedEventArgs e)
+        {
+            MainWindowViewModel.GetInstance().AddAsDataType(ImmediateText.Text);
+            ImmediateText.Text = string.Empty;
+        }
     }
 }

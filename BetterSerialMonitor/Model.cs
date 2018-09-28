@@ -19,6 +19,28 @@ namespace BetterSerialMonitor
     {
         #region Private variables
 
+        public enum Endianness
+        {
+            LitteEndian,
+            BigEndian
+        }
+
+        public enum TypesToInclude
+        {
+            Bool,
+            Sbyte,
+            Byte,
+            Int16,
+            UInt16,
+            Int32,
+            UInt32,
+            Int64,
+            UInt64,
+            Float,
+            Double,
+            Decimal
+        }
+        
         private List<int> _available_baud_rates = new List<int>() { 300, 1200, 2400, 4800, 9600, 19200, 38400, 57600, 74880, 115200 };
         private List<byte> _current_message = new List<byte>();
 
@@ -33,6 +55,8 @@ namespace BetterSerialMonitor
         
         private SerialPort _serial_port = null;
         private object _serial_port_lock = new object();
+
+        private int MaxBufferLength = 1000;
 
         #endregion
 
@@ -73,7 +97,7 @@ namespace BetterSerialMonitor
         #endregion
 
         #region Public properties
-
+        
         /// <summary>
         /// List of available baud rates
         /// </summary>
@@ -163,6 +187,151 @@ namespace BetterSerialMonitor
         public void ClearCurrentMessage()
         {
             CurrentMessage.Clear();
+            NotifyPropertyChanged("CurrentMessage");
+        }
+
+        /// <summary>
+        /// Adds text as a specific datatype
+        /// </summary>
+        /// <param name="text"></param>
+        public void AddAsDataType (string text, TypesToInclude t, Endianness e)
+        {
+            byte[] result_bytes = null;
+
+            switch (t)
+            {
+                case Model.TypesToInclude.Bool:
+
+                    var bool_parse_success = bool.TryParse(text, out bool bool_result);
+                    if (bool_parse_success)
+                    {
+                        result_bytes = BitConverter.GetBytes(bool_result);
+                    }
+
+                    break;
+                case Model.TypesToInclude.Sbyte:
+
+                    var sbyte_parse_success = sbyte.TryParse(text, out sbyte sbyte_result);
+                    if (sbyte_parse_success)
+                    {
+                        unchecked
+                        {
+                            result_bytes = new byte[] { (byte)sbyte_result };
+                        }
+                    }
+
+                    break;
+                case Model.TypesToInclude.Byte:
+
+                    var byte_parse_success = byte.TryParse(text, out byte byte_result);
+                    if (byte_parse_success)
+                    {
+                        result_bytes = new byte[] { byte_result };
+                    }
+                    
+                    break;
+                case Model.TypesToInclude.Int16:
+
+                    var short_parse_success = Int16.TryParse(text, out Int16 short_result);
+                    if (short_parse_success)
+                    {
+                        result_bytes = BitConverter.GetBytes(short_result);
+                    }
+
+                    break;
+                case Model.TypesToInclude.UInt16:
+
+                    var ushort_parse_success = UInt16.TryParse(text, out UInt16 ushort_result);
+                    if (ushort_parse_success)
+                    {
+                        result_bytes = BitConverter.GetBytes(ushort_result);
+                    }
+
+                    break;
+                case Model.TypesToInclude.Int32:
+
+                    var int_parse_success = Int32.TryParse(text, out Int32 int_result);
+                    if (int_parse_success)
+                    {
+                        result_bytes = BitConverter.GetBytes(int_result);
+                    }
+
+                    break;
+                case Model.TypesToInclude.UInt32:
+
+                    var uint_parse_success = UInt32.TryParse(text, out UInt32 uint_result);
+                    if (uint_parse_success)
+                    {
+                        result_bytes = BitConverter.GetBytes(uint_result);
+                    }
+
+                    break;
+                case Model.TypesToInclude.Int64:
+
+                    var long_parse_success = Int64.TryParse(text, out Int64 long_result);
+                    if (long_parse_success)
+                    {
+                        result_bytes = BitConverter.GetBytes(long_result);
+                    }
+
+                    break;
+                case Model.TypesToInclude.UInt64:
+
+                    var ulong_parse_success = UInt64.TryParse(text, out UInt64 ulong_result);
+                    if (ulong_parse_success)
+                    {
+                        result_bytes = BitConverter.GetBytes(ulong_result);
+                    }
+
+                    break;
+                case Model.TypesToInclude.Float:
+
+                    var float_parse_success = Single.TryParse(text, out Single single_result);
+                    if (float_parse_success)
+                    {
+                        result_bytes = BitConverter.GetBytes(single_result);
+                    }
+
+                    break;
+                case Model.TypesToInclude.Double:
+
+                    var double_parse_success = Double.TryParse(text, out Double double_result);
+                    if (double_parse_success)
+                    {
+                        result_bytes = BitConverter.GetBytes(double_result);
+                    }
+
+                    break;
+                case Model.TypesToInclude.Decimal:
+
+                    var decimal_parse_success = Decimal.TryParse(text, out Decimal decimal_result);
+                    if (decimal_parse_success)
+                    {
+                        Int32[] bits = decimal.GetBits(decimal_result);
+                        List<byte> b = new List<byte>();
+                        foreach (Int32 i in bits)
+                        {
+                            b.AddRange(BitConverter.GetBytes(i));
+                        }
+
+                        result_bytes = b.ToArray();
+                    }
+
+                    break;
+
+            }
+
+            if (result_bytes != null)
+            {
+                if ((BitConverter.IsLittleEndian && e == Endianness.BigEndian) ||
+                    (!BitConverter.IsLittleEndian && e == Endianness.LitteEndian))
+                {
+                    result_bytes = result_bytes.Reverse().ToArray();
+                }
+
+                CurrentMessage.AddRange(result_bytes);
+            }
+
             NotifyPropertyChanged("CurrentMessage");
         }
 
@@ -376,6 +545,10 @@ namespace BetterSerialMonitor
                     {
                         var input_data = _serial_port.ReadExisting();
                         CurrentReceiveBuffer += input_data;
+                        if (CurrentReceiveBuffer.Length > MaxBufferLength)
+                        {
+                            CurrentReceiveBuffer = CurrentReceiveBuffer.Substring(CurrentReceiveBuffer.Length - MaxBufferLength);
+                        }
                     }
                 }
 

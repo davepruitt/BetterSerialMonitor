@@ -96,16 +96,8 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-
-            <TextBlock Grid.Column="0" Grid.Row="1"
-                       Grid.ColumnSpan="5"
-                       Text="When adding bytes, separate each byte with a space. Bytes can be represented using decimal (0-255) or hexidecimal (0x00-0xff) numbers." 
-                       FontSize="12"
-                       TextWrapping="Wrap"
-                       HorizontalAlignment="Left"
-                       Margin="0,3,0,0"
-                       />
 
             <TextBlock Grid.Column="0" 
                        Text="Text to send: " 
@@ -137,6 +129,56 @@
                     Name="AddAsByteSequenceButton"
                     Click="AddAsByteSequenceButton_Click"
                     />
+
+            <GroupBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5"
+                      Header="Convert to data type and add bytes"
+                      >
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0" Text="Data type:" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                    <ComboBox Grid.Column="1" ItemsSource="{Binding Path=DataTypeOptions}"
+                              SelectedIndex="{Binding Path=DataTypeOptionsIndex,FallbackValue=0}"
+                              VerticalContentAlignment="Center"
+                              Width="150"
+                              Margin="10,5"
+                              />
+
+                    <TextBlock Grid.Column="2" Text="Endianness:" HorizontalAlignment="Left" VerticalAlignment="Center" 
+                               Margin="10,0,0,0"
+                               />
+                    <ComboBox Grid.Column="3" ItemsSource="{Binding Path=EndiannessOptions}"
+                      SelectedIndex="{Binding Path=EndiannessOptionsIndex, FallbackValue=0}"
+                      VerticalContentAlignment="Center"
+                        Width="150"
+                              Margin="10,5"
+                      />
+                    
+                    <Button Grid.Column="4" Content="Add to message" 
+                            Margin="10,5"
+                            Width="150"
+                            Name="DataTypeAddButton"
+                            Click="DataTypeAddButton_Click"
+                            />
+                </Grid>                
+            </GroupBox>
+
+
+
+            <TextBlock Grid.Column="0" Grid.Row="2"
+                       Grid.ColumnSpan="5"
+                       Text="When adding bytes, separate each byte with a space. Bytes can be represented using decimal (0-255) or hexidecimal (0x00-0xff) numbers." 
+                       FontSize="12"
+                       TextWrapping="Wrap"
+                       HorizontalAlignment="Left"
+                       Margin="0,3,0,0"
+                       />
         </Grid>
 
         <GroupBox Header="Current message" Margin="10" 
@@ -219,18 +261,42 @@
                  VerticalScrollBarVisibility="Auto"
                  IsEnabled="{Binding Path=IsPortConnected, FallbackValue=True}"
                  Text="{Binding Path=CurrentReceiveBufferText, FallbackValue=No text, Mode=OneWay}"
+                 TextChanged="TextBox_TextChanged"
+                 Name="DataReceivedBuffer"
                  />
 
-        <Button Grid.Row="4"
-                Content="Clear buffer" 
-                HorizontalAlignment="Right"
-                VerticalAlignment="Center"
-                Width="150"
-                Margin="0, 0, 10, 10"
-                IsEnabled="{Binding Path=IsPortConnected, FallbackValue=True}"
-                Name="ClearBufferButton"
-                Click="ClearBufferButton_Click"
-                />
+        <Grid Grid.Row="4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Column="0"
+                       Text="Max input buffer length:" 
+                       VerticalAlignment="Center"
+                       Margin="10,0,10,10"
+                       />
+            <TextBlock Grid.Column="1"
+                       Text="1000"
+                       VerticalAlignment="Center"
+                       Margin="5,0,10,10"
+                       />
+
+            <Button Grid.Row="0" Grid.Column="2"
+                    Content="Clear buffer" 
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Width="150"
+                    Margin="0, 0, 10, 10"
+                    IsEnabled="{Binding Path=IsPortConnected, FallbackValue=True}"
+                    Name="ClearBufferButton"
+                    Click="ClearBufferButton_Click"
+                    />
+
+        </Grid>
+
+        
 
     </Grid>
 </Window>

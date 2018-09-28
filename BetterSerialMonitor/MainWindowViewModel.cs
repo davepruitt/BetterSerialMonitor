@@ -161,9 +161,29 @@ namespace BetterSerialMonitor
             }
         }
 
+        public List<string> DataTypeOptions
+        {
+            get
+            {
+                return Enum.GetNames(typeof(Model.TypesToInclude)).ToList();
+            }
+        }
+
+        public List<string> EndiannessOptions
+        {
+            get
+            {
+                return Enum.GetNames(typeof(Model.Endianness)).ToList();
+            }
+        }
+
         public int SelectedPortIndex { get; set; } = 0;
 
         public int SelectedBaudRateIndex { get; set; } = 0;
+
+        public int DataTypeOptionsIndex { get; set; } = 0;
+
+        public int EndiannessOptionsIndex { get; set; } = 0;
 
         [ReactToModelPropertyChanged(new string[] { "CurrentMessage" })]
         public string Message_ASCII
@@ -251,6 +271,13 @@ namespace BetterSerialMonitor
         public void SendCurrentMessage ()
         {
             Model.GetInstance().SendCurrentMessage();
+        }
+
+        public void AddAsDataType(string text)
+        {
+            Model.TypesToInclude t = (Model.TypesToInclude) DataTypeOptionsIndex;
+            Model.Endianness end = (Model.Endianness) EndiannessOptionsIndex;
+            Model.GetInstance().AddAsDataType(text, t, end);
         }
 
         #endregion
