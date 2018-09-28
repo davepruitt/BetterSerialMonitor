@@ -1,0 +1,17 @@
+Z:\TBI\Analysis Code\BetterSerialMonitor\BetterSerialMonitor\bin\Release\BetterSerialMonitor.exe.config
+Z:\TBI\Analysis Code\BetterSerialMonitor\BetterSerialMonitor\bin\Release\BetterSerialMonitor.exe
+Z:\TBI\Analysis Code\BetterSerialMonitor\BetterSerialMonitor\bin\Release\BetterSerialMonitor.pdb
+Z:\TBI\Analysis Code\BetterSerialMonitor\BetterSerialMonitor\bin\Release\TxBDC_Common.dll
+Z:\TBI\Analysis Code\BetterSerialMonitor\BetterSerialMonitor\bin\Release\TxBDC_Common.pdb
+Z:\TBI\Analysis Code\BetterSerialMonitor\BetterSerialMonitor\obj\Release\MainWindow.g.cs
+Z:\TBI\Analysis Code\BetterSerialMonitor\BetterSerialMonitor\obj\Release\App.g.cs
+Z:\TBI\Analysis Code\BetterSerialMonitor\BetterSerialMonitor\obj\Release\BetterSerialMonitor_MarkupCompile.cache
+Z:\TBI\Analysis Code\BetterSerialMonitor\BetterSerialMonitor\obj\Release\BetterSerialMonitor_MarkupCompile.lref
+Z:\TBI\Analysis Code\BetterSerialMonitor\BetterSerialMonitor\obj\Release\MainWindow.baml
+Z:\TBI\Analysis Code\BetterSerialMonitor\BetterSerialMonitor\obj\Release\BetterSerialMonitor.g.resources
+Z:\TBI\Analysis Code\BetterSerialMonitor\BetterSerialMonitor\obj\Release\BetterSerialMonitor.Properties.Resources.resources
+Z:\TBI\Analysis Code\BetterSerialMonitor\BetterSerialMonitor\obj\Release\BetterSerialMonitor.csproj.GenerateResource.cache
+Z:\TBI\Analysis Code\BetterSerialMonitor\BetterSerialMonitor\obj\Release\BetterSerialMonitor.csproj.CoreCompileInputs.cache
+Z:\TBI\Analysis Code\BetterSerialMonitor\BetterSerialMonitor\obj\Release\BetterSerialMonitor.csproj.CopyComplete
+Z:\TBI\Analysis Code\BetterSerialMonitor\BetterSerialMonitor\obj\Release\BetterSerialMonitor.exe
+Z:\TBI\Analysis Code\BetterSerialMonitor\BetterSerialMonitor\obj\Release\BetterSerialMonitor.pdb

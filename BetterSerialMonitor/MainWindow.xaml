@@ -1,0 +1,223 @@
+﻿<Window x:Class="BetterSerialMonitor.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BetterSerialMonitor"
+        mc:Ignorable="d"
+        Title="Better Serial Monitor" Height="800" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Margin="10,10,10,3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Column="0" Grid.Row="0" Text="Available ports:" 
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Center"
+                       />
+            <ComboBox Grid.Column="1" Grid.Row="0"
+                      ItemsSource="{Binding Path=AvailablePorts}"
+                      SelectedIndex="{Binding Path=SelectedPortIndex, FallbackValue=0}"
+                      Width="250"
+                      Height="30"
+                      Margin="10,3,0,3"
+                      IsEnabled="{Binding Path=IsPortDisconnected, FallbackValue=True}"
+                      VerticalContentAlignment="Center"
+                      />
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="Baud rate:"
+                       HorizontalAlignment="Left" VerticalAlignment="Center" />
+            <ComboBox Grid.Column="1" Grid.Row="1"
+                      ItemsSource="{Binding Path=AvailableBaudRates}"
+                      SelectedIndex="{Binding Path=SelectedBaudRateIndex, FallbackValue=0}"
+                      Width="250"
+                      Height="30"
+                      Margin="10,0,0,0"
+                      IsEnabled="{Binding Path=IsPortDisconnected, FallbackValue=True}"
+                      VerticalContentAlignment="Center"
+                      />
+
+
+            <Button Grid.Row="0" Grid.Column="2"
+                    Content="Refresh available ports"
+                    Width="200" 
+                    Margin="10,3,0,3"
+                    FontSize="18"
+                    Name="RefreshPortsButton"
+                    Click="RefreshPortsButton_Click"
+                    />
+
+            <Button Grid.Row="1" Grid.Column="2"
+                    Content="{Binding Path=ConnectButtonContent, FallbackValue=Connect}"
+                    Foreground="{Binding Path=ConnectButtonForegroundColor, FallbackValue=Green}"
+                    Width="200" 
+                    Margin="10,3,0,3"
+                    FontWeight="Bold"
+                    FontSize="18"
+                    Name="ConnectButton"
+                    Click="ConnectButton_Click"
+                    />
+
+            
+
+            <TextBlock Grid.Row="0" Grid.RowSpan="2" Grid.Column="3"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       Text="{Binding Path=ConnectionStatusText, FallbackValue=Not connected}"
+                       FontSize="24"
+                       />
+        </Grid>
+        
+        <Grid Grid.Row="1" Margin="10"
+              IsEnabled="{Binding Path=IsPortConnected, FallbackValue=True}"
+              >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            
+            <TextBlock Grid.Column="0" 
+                       Text="Text to send: " 
+                       VerticalAlignment="Center" />
+            <TextBox Grid.Column="1" 
+                     Height="30" 
+                     Margin="5,0"
+                     VerticalContentAlignment="Center"
+                     Name="ImmediateText"
+                     />
+            <Button Grid.Column="2"
+                    Content="Send immediately"
+                    Width="125"
+                    Margin="5"
+                    Name="SendImmediatelyButton"
+                    Click="SendImmediatelyButton_Click"
+                    />
+            <Button Grid.Column="3"
+                    Content="Add to message"
+                    Width="125"
+                    Margin="5"
+                    Name="AddToMessageButton"
+                    Click="AddToMessageButton_Click"
+                    />
+            <Button Grid.Column="4"
+                    Content="Add as byte sequence"
+                    Width="150"
+                    Margin="5"
+                    Name="AddAsByteSequenceButton"
+                    Click="AddAsByteSequenceButton_Click"
+                    />
+        </Grid>
+
+        <GroupBox Header="Current message" Margin="10" 
+                  Grid.Row="2"
+                  Height="200"
+                  IsEnabled="{Binding Path=IsPortConnected, FallbackValue=True}"
+                  >
+            <Grid Margin="5">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="150" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="Message (ASCII):" 
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Left"
+                           />
+                <TextBox Grid.Row="0" Grid.Column="1" AcceptsReturn="True" TextWrapping="Wrap"
+                         VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" 
+                         Text="{Binding Path=Message_ASCII, FallbackValue=No message, Mode=OneWay}"
+                         Margin="3"
+                         IsReadOnly="True"
+                         />
+
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="Message (Byte sequence):"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Left"
+                           />
+                <TextBox Grid.Row="1" Grid.Column="1" AcceptsReturn="True" TextWrapping="Wrap"
+                         VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"
+                         Text="{Binding Path=Message_Bytes, FallbackValue=No message, Mode=OneWay}"
+                         Margin="3"
+                         IsReadOnly="True"
+                         />
+
+                <TextBlock Grid.Column="0" Grid.Row="2" 
+                           Text="Length (in bytes): " 
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           />
+                <Grid Grid.Row="2" Grid.Column="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    
+                    <TextBlock Grid.Column="0" Text="{Binding Path=MessageLength, FallbackValue=0}"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Center"
+                               />
+                    <Button Grid.Column="1" Content="Clear message" Margin="10" 
+                            Name="ClearMessageButton"
+                            Click="ClearMessageButton_Click"
+                            />
+                    <Button Grid.Column="2" Content="Send message" 
+                            Margin="10"
+                            Name="SendMessageButton"
+                            Click="SendMessageButton_Click"
+                            />
+
+                </Grid>
+                
+            </Grid>
+        </GroupBox>
+
+        <TextBox Grid.Row="3"
+                 TextWrapping="Wrap"
+                 AcceptsReturn="True"
+                 AcceptsTab="True"
+                 IsReadOnly="True"
+                 Margin="10"
+                 HorizontalScrollBarVisibility="Disabled"
+                 VerticalScrollBarVisibility="Auto"
+                 IsEnabled="{Binding Path=IsPortConnected, FallbackValue=True}"
+                 Text="{Binding Path=CurrentReceiveBufferText, FallbackValue=No text, Mode=OneWay}"
+                 />
+
+        <Button Grid.Row="4"
+                Content="Clear buffer" 
+                HorizontalAlignment="Right"
+                VerticalAlignment="Center"
+                Width="150"
+                Margin="0, 0, 10, 10"
+                IsEnabled="{Binding Path=IsPortConnected, FallbackValue=True}"
+                Name="ClearBufferButton"
+                Click="ClearBufferButton_Click"
+                />
+
+    </Grid>
+</Window>
