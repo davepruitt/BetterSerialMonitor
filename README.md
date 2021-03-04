@@ -5,5 +5,4 @@ This one is a little bit better. It allows you to construct a message out of tex
 
 When adding bytes to your message, you can choose to enter a decimal number or a hexidecimal number. Separate each byte by a space. Hexidecimal numbers should be prefixed by "0x".
 
-Have fun!
-
+Have fun! Please feel free to contact me if you would like to see any features added to this program.
