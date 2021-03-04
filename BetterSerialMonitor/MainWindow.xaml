@@ -83,56 +83,70 @@
                        />
         </Grid>
         
-        <Grid Grid.Row="1" Margin="10"
-              IsEnabled="{Binding Path=IsPortConnected, FallbackValue=True}"
-              >
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
+        <Grid Grid.Row="1" Margin="10" IsEnabled="{Binding Path=IsPortConnected, FallbackValue=True}">
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
-            <TextBlock Grid.Column="0" 
-                       Text="Text to send: " 
-                       VerticalAlignment="Center" />
-            <TextBox Grid.Column="1" 
-                     Height="30" 
-                     Margin="5,0"
-                     VerticalContentAlignment="Center"
-                     Name="ImmediateText"
-                     />
-            <Button Grid.Column="2"
-                    Content="Send immediately"
-                    Width="125"
-                    Margin="5"
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" 
+                           Text="Text to send: " VerticalAlignment="Center" />
+                <TextBox Grid.Column="1" 
+                         Height="30" 
+                         Margin="5,0"
+                         VerticalContentAlignment="Center"
+                         Name="ImmediateText" />
+            </Grid>
+
+            <Grid Grid.Row="1" Margin="10">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+
+                <Button Grid.Column="0"
+                    Content="Send text immediately"
+                    Margin="5,0"
+                    Padding="10"
                     Name="SendImmediatelyButton"
                     Click="SendImmediatelyButton_Click"
                     />
-            <Button Grid.Column="3"
-                    Content="Add to message"
-                    Width="125"
-                    Margin="5"
+                <Button Grid.Column="1"
+                    Content="Add to message as ASCII"
+                    Margin="5,0"
+                    Padding="10"
                     Name="AddToMessageButton"
                     Click="AddToMessageButton_Click"
                     />
-            <Button Grid.Column="4"
-                    Content="Add as byte sequence"
-                    Width="150"
-                    Margin="5"
+                <Button Grid.Column="2"
+                    Content="Add to message as byte sequence"
+                    Margin="5,0"
+                    Padding="10"
                     Name="AddAsByteSequenceButton"
                     Click="AddAsByteSequenceButton_Click"
                     />
 
-            <GroupBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5"
-                      Header="Convert to data type and add bytes"
-                      >
+            </Grid>
+
+            <TextBlock Grid.Row="2"
+                       Text="When adding as a byte sequence, separate each byte with a space. Bytes can be represented using decimal (0-255) or hexidecimal (0x00-0xff) numbers." 
+                       FontSize="12"
+                       TextWrapping="Wrap"
+                       HorizontalAlignment="Center"
+                       Margin="10,0,10,20"
+                       />
+
+            <GroupBox Grid.Row="3" Header="OR Convert the text to a data type and add the bytes to the message">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
@@ -159,26 +173,16 @@
                         Width="150"
                               Margin="10,5"
                       />
-                    
-                    <Button Grid.Column="4" Content="Add to message" 
+
+                    <Button Grid.Column="4" Content="Add converted bytes to message" 
                             Margin="10,5"
-                            Width="150"
+                            Padding="20,10"
                             Name="DataTypeAddButton"
                             Click="DataTypeAddButton_Click"
                             />
-                </Grid>                
+                </Grid>
             </GroupBox>
 
-
-
-            <TextBlock Grid.Column="0" Grid.Row="2"
-                       Grid.ColumnSpan="5"
-                       Text="When adding bytes, separate each byte with a space. Bytes can be represented using decimal (0-255) or hexidecimal (0x00-0xff) numbers." 
-                       FontSize="12"
-                       TextWrapping="Wrap"
-                       HorizontalAlignment="Left"
-                       Margin="0,3,0,0"
-                       />
         </Grid>
 
         <GroupBox Header="Current message" Margin="10" 
