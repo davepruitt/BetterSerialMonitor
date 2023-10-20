@@ -1,10 +1,10 @@
-﻿using System;
+﻿using BetterSerialMonitor.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
-using TxBDC_Common;
 
 namespace BetterSerialMonitor
 {
