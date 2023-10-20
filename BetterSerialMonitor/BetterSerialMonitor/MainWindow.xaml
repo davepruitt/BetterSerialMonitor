@@ -282,7 +282,7 @@
                        Margin="10,0,10,10"
                        />
             <TextBlock Grid.Column="1"
-                       Text="1000"
+                       Text="10000"
                        VerticalAlignment="Center"
                        Margin="5,0,10,10"
                        />

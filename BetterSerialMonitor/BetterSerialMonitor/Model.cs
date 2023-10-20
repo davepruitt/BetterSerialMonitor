@@ -56,7 +56,7 @@ namespace BetterSerialMonitor
         private SerialPort _serial_port = null;
         private object _serial_port_lock = new object();
 
-        private int MaxBufferLength = 1000;
+        private int MaxBufferLength = 10000;
 
         #endregion
 
