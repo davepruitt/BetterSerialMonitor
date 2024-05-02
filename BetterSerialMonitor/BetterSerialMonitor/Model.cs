@@ -1,4 +1,5 @@
 ﻿using BetterSerialMonitor.Utilities;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -499,21 +500,46 @@ namespace BetterSerialMonitor
 
         private void Refresh_ports_worker_DoWork(object sender, DoWorkEventArgs e)
         {
+            const string CUR_CTRL = "HKEY_LOCAL_MACHINE\\System\\CurrentControlSet\\";
+
             lock (_available_devices_lock)
             {
+
+
                 //Create a list to hold information from USB devices
                 List<USBDeviceInfo> devices = new List<USBDeviceInfo>();
 
                 //Query all connected devices
-                var searcher = new ManagementObjectSearcher(@"SELECT * FROM WIN32_SerialPort");
-                var collection = searcher.Get();
+                var searcher = new ManagementObjectSearcher(
+                    "root\\CIMV2",
+                    "SELECT * FROM Win32_PnPEntity WHERE ClassGuid=\"{4d36e978-e325-11ce-bfc1-08002be10318}\""
+                );
 
+                var collection = searcher.Get();
+                
                 //Grab the information we need
                 foreach (var device in collection)
                 {
-                    string id = (string)device.GetPropertyValue("DeviceID");
+                    Dictionary<string, string> props = new Dictionary<string, string>();
+                    foreach (var property in device.Properties)
+                    {
+                        try
+                        {
+                            props[property.Name] = (string)property.Value;
+                        }
+                        catch (Exception)
+                        {
+                            //empty
+                        }
+                    }
+
+                    string pnp_device_id = (string)device.GetPropertyValue("PNPDeviceID");
                     string desc = (string)device.GetPropertyValue("Description");
-                    USBDeviceInfo d = new USBDeviceInfo(desc, id, false);
+
+                    string s_RegEnum = CUR_CTRL + "Enum\\" + pnp_device_id + "\\Device Parameters";
+                    string com_port = Registry.GetValue(s_RegEnum, "PortName", "").ToString();
+
+                    USBDeviceInfo d = new USBDeviceInfo(desc, com_port, false);
                     devices.Add(d);
                 }
 
